@@ -20,3 +20,4 @@ build
 *.log.gz
 out/
 MANIFEST.MF
+/.nb-gradle/
