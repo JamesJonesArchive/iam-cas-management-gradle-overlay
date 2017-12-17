@@ -25,6 +25,6 @@ node('master') {
 //    }
 //  }
   stage('Archive RPM artifact') {
-    archiveArtifacts artifacts: 'cas/build/libs/usf-cas-management*.rpm'
+    archiveArtifacts artifacts: 'cas-management/build/libs/usf-cas-management*.rpm'
   }
 }
