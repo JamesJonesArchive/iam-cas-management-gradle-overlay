@@ -10,6 +10,6 @@
     - "./gradlew clean"
     - "./gradlew build"
 - name: Build USF CAS Management
-  shell: "fpm -s dir -t rpm -n {{ app_name | quote }} -v {{ app_version | quote }} --iteration {{ package_revision | quote }} --description {{ 'USF CAS Managmeent - Configuration Manager for CAS' | quote }} --vendor {{ 'University of South Florida' | quote }} -d {{ 'haveged' | quote }} --config-files /etc/sysconfig/usf-cas-managment {{ playbook_dir }}/files/systemd/usf-cas-management=/etc/sysconfig/usf-cas-management cas.war=/usr/local/lib/usf-cas-management/cas.war {{ java_home }}/.=/usr/local/lib/usf-cas-management/jdk8 {{ playbook_dir }}/../README.md=/var/log/usf-cas-managment/README.md {{ playbook_dir }}/files/systemd/usf-cas-management.service=/lib/systemd/system/usf-cas-management.service"
+  shell: "fpm -s dir -t rpm -n {{ app_name | quote }} -v {{ app_version | quote }} --iteration {{ package_revision | quote }} --description {{ 'USF CAS Managmeent - Configuration Manager for CAS' | quote }} --vendor {{ 'University of South Florida' | quote }} -d {{ 'haveged' | quote }} --config-files /etc/sysconfig/usf-cas-managment {{ playbook_dir }}/files/systemd/usf-cas-management=/etc/sysconfig/usf-cas-management cas-management.war=/usr/local/lib/usf-cas-management/cas-management.war {{ java_home }}/.=/usr/local/lib/usf-cas-management/jdk8 {{ playbook_dir }}/../README.md=/var/log/usf-cas-managment/README.md {{ playbook_dir }}/files/systemd/usf-cas-management.service=/lib/systemd/system/usf-cas-management.service"
   args:
       chdir: "../cas-management/build/libs"
