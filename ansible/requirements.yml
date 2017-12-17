@@ -1,0 +1,15 @@
+---
+- src: ssh://git@github.com/USF-IT/cims-ansible-inventory.git
+  # version: master TEMPORARY UNTIL I SEE CERTS ARE BEING APPLIED CORRECTLY
+  version: develop
+  scm: git
+  name: inventory
+- src: ssh://git@github.com/USF-IT/idm-ansible-common.git
+  # version: master TEMPORARY UNTIL I SEE CERTS ARE BEING APPLIED CORRECTLY
+  version: develop
+  scm: git
+  name: common
+- src: ssh://git@github.com/USF-IT/cims-ansible-role-maven-libs-extra.git
+  version: master
+  scm: git
+  name: mavenlibsextra

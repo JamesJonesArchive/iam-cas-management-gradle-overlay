@@ -1,0 +1,7 @@
+---
+app_name: usf-cas-management
+app_version: 1.0.0
+app_config: /etc/cas/config
+
+oracle_home: /usr/lib/oracle/12.1/client64
+oracle_instantclient_version: 12.1.0.2.0
