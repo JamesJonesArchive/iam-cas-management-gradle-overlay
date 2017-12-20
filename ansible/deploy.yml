@@ -22,7 +22,7 @@
     src: "{{ item }}"
     dest: /tmp/rpms
   with_fileglob:
-    - "../cas/build/libs/usf-cas-management*.rpm"
+    - "../cas-management/build/libs/usf-cas-management*.rpm"
   register: usf_cas_management_rpm_copy
 - name: Install ic basic
   yum:
