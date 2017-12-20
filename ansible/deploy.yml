@@ -17,13 +17,13 @@
   with_fileglob:
     - "{{ local_repo }}/oracle-instantclient12.1*.rpm"
   register: instantclient_rpm_copy
-- name: Copy iam-feeds to remote host
+- name: Copy usf-cas-management to remote host
   copy:
     src: "{{ item }}"
     dest: /tmp/rpms
   with_fileglob:
-    - "../cas/build/libs/usf-cas*.rpm"
-  register: usf_cas_rpm_copy
+    - "../cas/build/libs/usf-cas-management*.rpm"
+  register: usf_cas_management_rpm_copy
 - name: Install ic basic
   yum:
     name: "{{ item.dest }}"
@@ -36,18 +36,18 @@
     state: present
   when: ansible_distribution == "Fedora" 
   with_items: "{{ instantclient_rpm_copy.results }}"
-- name: Install/Update usf-cas
+- name: Install/Update usf-cas-management
   yum:
     name: "{{ item.dest }}"
     state: present
   when: ansible_distribution != "Fedora" 
-  with_items: "{{ usf_cas_rpm_copy.results }}"
-- name: Install/Update usf-cas
+  with_items: "{{ usf_cas_management_rpm_copy.results }}"
+- name: Install/Update usf-cas-management
   dnf:
     name: "{{ item.dest }}"
     state: present
   when: ansible_distribution == "Fedora" 
-  with_items: "{{ usf_cas_rpm_copy.results }}"
+  with_items: "{{ usf_cas_management_rpm_copy.results }}"
 - name: Reload systemctl daemon
   shell: systemctl daemon-reload
 - name: create config folder
@@ -56,42 +56,43 @@
     state: "{{ item }}"
   with_items:
     - directory
-- name: create usf-cas external cas.properties
+#- name: create usf-cas-management external cas.properties
+#  template:
+#    src="{{ playbook_dir }}/templates/config/cas.properties.j2"
+#    dest="{{ app_config }}/cas.properties"
+#    mode=0644
+#    backup=no
+#- name: create usf-cas external application.yml
+#  template:
+#    src="{{ playbook_dir }}/templates/config/application.yml.j2"
+#    dest="{{ app_config }}/application.yml"
+#    mode=0644
+#    backup=no
+- name: create usf-cas-management external usf-cas-management-config.yml
   template:
-    src="{{ playbook_dir }}/templates/config/cas.properties.j2"
-    dest="{{ app_config }}/cas.properties"
+    src="{{ playbook_dir }}/templates/config/usf-cas-management-config.yml.j2"
+    dest="{{ app_config }}/usf-cas-management-config.yml"
     mode=0644
     backup=no
-- name: create usf-cas external application.yml
-  template:
-    src="{{ playbook_dir }}/templates/config/application.yml.j2"
-    dest="{{ app_config }}/application.yml"
-    mode=0644
-    backup=no
-- name: create usf-cas external usf-cas-config.yml
-  template:
-    src="{{ playbook_dir }}/templates/config/usf-cas-config.yml.j2"
-    dest="{{ app_config }}/usf-cas-config.yml"
-    mode=0644
-    backup=no
-- name: create usf-cas external log4j2.xml
-  copy:
-    src="{{ playbook_dir }}/files/config/log4j2.xml"
-    dest="{{ app_config }}/log4j2.xml"
-    mode=0644
-    backup=no
-- name: Remove keystore (if exists)
-  file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-    - /etc/cas/keystore
-    - /etc/cas/keystore.p12
-- name: Create a pkcs12 keystore
-  command: "openssl pkcs12 -export -name cas -in /etc/pki/tls/certs/{{ ansible_fqdn | replace('.', '_') }}.crt -inkey /etc/pki/tls/private/{{ ansible_fqdn | replace('.', '_') }}.key -out /etc/cas/keystore.p12 -passout pass:changeit"
-# Create PKCS12 keystore from private key and public certificate.
-- name: Import PKCS12 keystore and build a keystore
-  command: "keytool -importkeystore -deststorepass changeit -destkeypass changeit -destkeystore /etc/cas/keystore -srckeystore /etc/cas/keystore.p12 -srcstoretype PKCS12 -srcstorepass changeit -alias cas"
+#- name: create usf-cas external log4j2.xml
+#  copy:
+#    src="{{ playbook_dir }}/files/config/log4j2.xml"
+#    dest="{{ app_config }}/log4j2.xml"
+#    mode=0644
+#    backup=no
+#- name: Remove keystore (if exists)
+#  file:
+#    path: "{{ item }}"
+#    state: absent
+#  with_items:
+#    - /etc/cas/keystore
+#    - /etc/cas/keystore.p12
+#- name: Create a pkcs12 keystore
+#  command: "openssl pkcs12 -export -name cas -in /etc/pki/tls/certs/{{ ansible_fqdn | replace('.', '_') }}.crt -inkey /etc/pki/tls/private/{{ ansible_fqdn | replace('.', '_') }}.key -out /etc/cas/keystore.p12 -passout pass:changeit"
+## Create PKCS12 keystore from private key and public certificate.
+#- name: Import PKCS12 keystore and build a keystore
+#  command: "keytool -importkeystore -deststorepass changeit -destkeypass changeit -destkeystore /etc/cas/keystore -srckeystore /etc/cas/keystore.p12 -srcstoretype PKCS12 -srcstorepass changeit -alias cas"
+
 #- name: Import a cert with a specified alias, create it if it doesn't exist
 #  java_cert:
 #    pkcs12_path: "/etc/cas/keystore.p12"
@@ -104,8 +105,8 @@
 #    keystore_create: yes
 #    executable: /usr/local/lib/usf-cas/jdk8/bin/keytool
 #    state: present
-- name: Restart and enable usf-cas service
+- name: Restart and enable usf-cas-management service
   service:
-    name: usf-cas
+    name: usf-cas-management
     enabled: yes
     state: restarted

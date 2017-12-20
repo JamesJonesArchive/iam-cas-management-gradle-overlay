@@ -1,5 +1,5 @@
 # SERVER_PORT=9091
 SPRING_CONFIG_NAME=usf-cas-management-config
-SPRING_CONFIG_LOCATION=file:///etc/config/
+SPRING_CONFIG_LOCATION=file:///etc/cas/config/
 
 
