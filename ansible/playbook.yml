@@ -1,5 +1,6 @@
 ---
 - hosts: "{{ target_hosts }}"
+  connection: paramiko
   vars_files:
     - ./vars/main.yml
   roles:
