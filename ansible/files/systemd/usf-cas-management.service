@@ -4,7 +4,7 @@ Documentation=https://github.com/USF-IT/iam-cas-management-gradle-overlay
 After=network.target
 
 [Service]
-SuccessExitStatus=143
+# SuccessExitStatus=143
 EnvironmentFile=/etc/sysconfig/usf-cas-management
 Environment=JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom
 ExecStart=/usr/local/lib/usf-cas-management/jdk8/jre/bin/java -Dgrails.env=prod -jar /usr/local/lib/usf-cas-management/cas-management.war
