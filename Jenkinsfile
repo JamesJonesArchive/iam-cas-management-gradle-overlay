@@ -12,7 +12,7 @@ node('master') {
   } else {
     env.DEPLOY_KEY = env.USF_ANSIBLE_VAULT_KEY
   }
-  env.ANSIBLE_PIPELINING = True
+  env.ANSIBLE_PIPELINING = 'True'
   stage('Get Ansible Roles') {
     sh('#!/bin/sh -e\n' + 'rm -rf ansible/roles')
     sh('#!/bin/sh -e\n' + 'ansible-galaxy install -r ansible/requirements.yml -p ansible/roles/ -f')
